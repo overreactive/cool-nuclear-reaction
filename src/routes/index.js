@@ -13,7 +13,7 @@ export default function createRoutes(store) {
     <CoreLayout>
       <Switch>
         {/* Exact Home Route */}
-        <Route exact { ...Home } />
+        <Route exact path={Home.path} component={() => <Home.component />} />
         {/* Build Route components from routeSettings */
         [
           AccountRoute,
