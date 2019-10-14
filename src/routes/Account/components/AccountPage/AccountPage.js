@@ -15,7 +15,7 @@ function AccountPage() {
   const classes = useStyles()
   const firebase = useFirebase()
   const { showSuccess, showError } = useNotifications()
-  
+
   // Get profile from redux state
   const profile = useSelector(state => state.firebase.profile)
 

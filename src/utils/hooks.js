@@ -9,5 +9,5 @@ export function useActions(actions, deps) {
       return actions.map(a => bindActionCreators(a, dispatch))
     }
     return bindActionCreators(actions, dispatch)
-  }, deps ? [dispatch, ...deps] : [dispatch])
+  }, [actions, dispatch])
 }

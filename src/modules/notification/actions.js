@@ -45,7 +45,10 @@ export function showSuccess(message) {
  * @param {String} message - Message to show
  */
 export function showError(message) {
-  return showNotification({ type: 'error', message: `Error: ${message || ''}` })
+  return showNotification({
+    type: 'error',
+    message: `Error: ${message || ''}`
+  })
 }
 
 /**

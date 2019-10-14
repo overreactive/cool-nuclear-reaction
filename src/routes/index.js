@@ -12,7 +12,8 @@ export default function createRoutes(store) {
   return (
     <CoreLayout>
       <Switch>
-        <Route exact path={Home.path} component={() => <Home.component />} />
+        {/* Exact Home Route */}
+        <Route exact { ...Home } />
         {/* Build Route components from routeSettings */
         [
           AccountRoute,
@@ -20,8 +21,8 @@ export default function createRoutes(store) {
           SignupRoute,
           LoginRoute
           /* Add More Routes Here */
-        ].map((settings, index) => (
-          <Route key={`Route-${index}`} {...settings} />
+        ].map((route, index) => (
+          <Route key={`Route-${index}`} {...route} />
         ))}
         <Route component={NotFoundRoute.component} />
       </Switch>

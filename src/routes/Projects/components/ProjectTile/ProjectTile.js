@@ -18,7 +18,7 @@ function ProjectTile({ name, projectId, showDelete }) {
   const history = useHistory()
   const firebase = useFirebase()
   const { showError, showSuccess } = useNotifications()
-  
+
   function goToProject() {
     return history.push(`${LIST_PATH}/${projectId}`)
   }
@@ -33,7 +33,7 @@ function ProjectTile({ name, projectId, showDelete }) {
         return Promise.reject(err)
       })
   }
-  
+
   return (
     <Paper className={classes.root}>
       <div className={classes.top}>
@@ -53,7 +53,7 @@ function ProjectTile({ name, projectId, showDelete }) {
 }
 
 ProjectTile.propTypes = {
-  name: PropTypes.string,
+  name: PropTypes.string
 }
 
 ProjectTile.defaultProps = {

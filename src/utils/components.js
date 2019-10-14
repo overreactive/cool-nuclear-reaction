@@ -91,37 +91,6 @@ export function renderWhileEmpty(propNames, component) {
 }
 
 /**
- * HOC that logs props using console.log. Accepts an array list of prop names
- * to log, if none provided all props are logged. **NOTE:** Only props at
- * available to the HOC will be logged.
- * @param {Array} propNames - List of prop names to log. If none provided, all
- * are logged
- * @returns {HigherOrderComponent}
- * @example <caption>Log Single Prop</caption>
- * import { compose } from 'redux'
- * import { connect } from 'react-redux'
- * import firebaseConnect from 'react-redux-firebase/lib/firebaseConnect'
- *
- * const enhance = compose(
- *   withProps(() => ({ projectName: 'test' })),
- *   logProps(['projectName']) // 'test' would be logged to console when SomeComponent is rendered
- * )
- *
- * export default enhance(SomeComponent)
- */
-export function logProps(propNames, logName = '') {
-  return mapProps(ownerProps => {
-    /* eslint-disable no-console */
-    console.log(
-      `${logName} props:`,
-      propNames ? pick(ownerProps, propNames) : ownerProps
-    )
-    /* eslint-enable no-console */
-    return ownerProps
-  })
-}
-
-/**
  * Create component which is loaded async, showing a loading spinner
  * in the meantime.
  * @param {object} opts - Loading options
