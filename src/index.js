@@ -16,7 +16,6 @@ initScripts()
 
 // Store Initialization
 // ------------------------------------
-// TODO: no one uses authError
 const initialState = window.___INITIAL_STATE__ || {
   firebase: { authError: null }
 }

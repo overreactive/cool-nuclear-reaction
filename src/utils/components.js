@@ -1,7 +1,7 @@
-import { get, pick } from 'lodash'
+import { get } from 'lodash'
 import { isLoaded, isEmpty } from 'react-redux-firebase'
 import LoadableComponent from 'react-loadable'
-import { mapProps, branch, renderComponent } from 'recompose'
+import { branch, renderComponent } from 'recompose'
 import LoadingSpinner from 'components/LoadingSpinner'
 
 /**

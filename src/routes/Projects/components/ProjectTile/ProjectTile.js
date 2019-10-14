@@ -6,17 +6,18 @@ import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 import DeleteIcon from '@material-ui/icons/Delete'
 import { makeStyles } from '@material-ui/core/styles'
-import { useFirebase } from 'react-redux-firebase'
 import { LIST_PATH } from 'constants/paths'
 import styles from './ProjectTile.styles'
 import useNotifications from 'modules/notification/components/useNotifications'
 
+import { firestoreConnect } from 'react-redux-firebase'
+
+
 const useStyles = makeStyles(styles)
 
-function ProjectTile({ name, projectId, showDelete }) {
+function ProjectTile({ name, projectId, showDelete, firestore }) {
   const classes = useStyles()
   const history = useHistory()
-  const firebase = useFirebase()
   const { showError, showSuccess } = useNotifications()
 
   function goToProject() {
@@ -24,8 +25,7 @@ function ProjectTile({ name, projectId, showDelete }) {
   }
 
   function deleteProject() {
-    return firebase
-      .remove(`projects/${projectId}`)
+    return firestore.collection('projects').doc(`${projectId}`).delete()
       .then(() => showSuccess('Project deleted successfully'))
       .catch(err => {
         console.error('Error:', err) // eslint-disable-line no-console
@@ -60,4 +60,4 @@ ProjectTile.defaultProps = {
   showDelete: true
 }
 
-export default ProjectTile
+export default firestoreConnect()(ProjectTile)
