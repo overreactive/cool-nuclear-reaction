@@ -9,5 +9,5 @@
 
 # React App
 build
-src/config.js
+#src/config.js
 .env
