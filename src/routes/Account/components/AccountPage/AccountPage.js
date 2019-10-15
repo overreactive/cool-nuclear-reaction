@@ -9,9 +9,10 @@ import { spinnerWhileLoading } from 'utils/components'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firebaseConnect } from 'react-redux-firebase'
+import FileUploader from 'components/FileUploader'
 const useStyles = makeStyles(styles)
 
-function AccountPage({ firebase, profile }) {
+function AccountPage({ firebase, profile, auth }) {
   const classes = useStyles()
 
   const { showSuccess, showError } = useNotifications()
@@ -27,6 +28,19 @@ function AccountPage({ firebase, profile }) {
       })
   }
 
+  function updateUserProfiles(files_metadata) {
+    firebase
+      .updateProfile({
+        avatarUrl: files_metadata.downloadURL
+      })
+      .then(profile => {
+        console.log('Success updating profile', profile)
+      })
+      .catch(err => {
+        console.log('Error', err)
+      })
+  }
+
   return (
     <div className={classes.root}>
       <Paper className={classes.pane}>
@@ -37,6 +51,11 @@ function AccountPage({ firebase, profile }) {
               src={profile.avatarUrl || defaultUserImageUrl}
               alt=""
             />
+            <FileUploader
+              paths={['userAvatars', auth.uid]}
+              onFinish={updateUserProfiles}
+              multiple={false}
+              uniqueFile={true}></FileUploader>
           </div>
           <div className={classes.meta}>
             <AccountForm
@@ -53,8 +72,8 @@ function AccountPage({ firebase, profile }) {
 
 const enhance = compose(
   firebaseConnect(() => ['profile']),
-  connect(({ firebase: { profile } }) => ({ profile })),
-  spinnerWhileLoading(['profile'])
+  connect(({ firebase: { profile, auth } }) => ({ profile, auth })),
+  spinnerWhileLoading(['profile', 'auth'])
 )
 
 export default enhance(AccountPage)

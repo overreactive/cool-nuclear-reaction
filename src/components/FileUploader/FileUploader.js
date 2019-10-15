@@ -1,39 +1,59 @@
 import React from 'react'
+import { map } from 'lodash'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { map } from 'lodash'
-import { useSelector } from 'react-redux'
 import { firebaseConnect } from 'react-redux-firebase'
 import Dropzone from 'react-dropzone'
+import { useNotifications } from 'modules/notification'
+import { spinnerWhileLoading } from 'utils/components'
+import { get } from 'lodash'
+import cuid from 'cuid'
 
-// Path within Database for metadata (also used for file Storage path)
-const fileBasePath = 'projectImages'
+function FileUploader({
+  firebase,
+  paths,
+  uploadedFiles,
+  onFinish,
+  multiple,
+  uniqueFile
+}) {
+  const filePath = paths.join('/')
+  const { showSuccess, showError } = useNotifications()
 
-function FileUploader({ firebase, projectId }) {
-  const filePath = fileBasePath + '/' + projectId
-  console.log('filePath: ' + filePath)
-  const uploadedFiles = useSelector(state => state.firebase.data[fileBasePath])
-
-  console.log(uploadedFiles)
   function onFilesDrop(files) {
-    console.log(filePath)
-    return firebase.uploadFiles(filePath, files, filePath)
+    if (files.length === 0) {
+      showError(multiple ? 'Multiple File Upload Failed' : 'Single File Only!')
+      return
+    }
+    return firebase
+      .uploadFiles(filePath, files, filePath, { name: cuid() })
+      .then(filesSaved => {
+        showSuccess('File Uploaded sucessfully')
+        if (uniqueFile) {
+          if (uploadedFiles) {
+            for (const [key, value] of Object.entries(uploadedFiles)) {
+              firebase.deleteFile(value.fullPath, `${filePath}/${key}`)
+            }
+          }
+        }
+        if (!multiple) {
+          const unique = filesSaved[0]
+          onFinish(unique)
+        } else {
+          onFinish(filesSaved)
+        }
+      })
+      .catch(err => {
+        showError('Could not upload file')
+      })
   }
   function onFileDelete(file, key) {
     return firebase.deleteFile(file.fullPath, `${filePath}/${key}`)
   }
 
-  function getImageDownloadUrl(imageName) {
-    console.log("get image download url", filePath, imageName);
-    firebase.storage().ref(filePath).child(imageName).getDownloadURL().then(url => {
-      console.log("url, ", url);
-      return url;
-    })
-  }
-
   return (
     <div>
-      <Dropzone onDrop={onFilesDrop}>
+      <Dropzone multiple={multiple} onDrop={onFilesDrop}>
         {({ getRootProps, getInputProps }) => (
           <section>
             <div {...getRootProps()}>
@@ -43,13 +63,12 @@ function FileUploader({ firebase, projectId }) {
           </section>
         )}
       </Dropzone>
-      {uploadedFiles && uploadedFiles[projectId] && (
+      {uploadedFiles && (
         <div>
           <h3>Uploaded file(s):</h3>
-          {map(uploadedFiles[projectId], (file, key) => (
+          {map(uploadedFiles, (file, key) => (
             <div key={file.name + key}>
               <span>{file.name}</span>
-              { getImageDownloadUrl(file.name) }
               <button onClick={() => onFileDelete(file, key)}>
                 Delete File
               </button>
@@ -61,8 +80,14 @@ function FileUploader({ firebase, projectId }) {
   )
 }
 
-export default firebaseConnect(props => [
-  {
-    path: `${fileBasePath}/${props.projectId}`
-  }
-])(FileUploader)
+export default compose(
+  firebaseConnect(props => [
+    {
+      path: props.paths.join('/')
+    }
+  ]),
+  connect(({ firebase: { data, auth } }, ownProps) => ({
+    uploadedFiles: get(data[ownProps.paths.slice(0, -1).join('/')], auth.uid)
+  })),
+  spinnerWhileLoading(['uploadedFiles'])
+)(FileUploader)

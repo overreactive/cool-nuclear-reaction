@@ -23,12 +23,14 @@
   "dependencies": {
     "@material-ui/core": "^4.5.1",
     "@material-ui/icons": "^4.5.1",
+    "cuid": "^2.1.6",
     "firebase": "^7.2.0",
     "history": "^4.10.1",
     "lodash": "^4.17.15",
     "prop-types": "^15.7.2",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
+    "react-dropzone": "^10.1.10",
     "react-google-button": "^0.5.3",
     "react-loadable": "^5.5.0",
     "react-redux": "^7.1.1",
@@ -39,6 +41,7 @@
     "redux-auth-wrapper": "^2.1.0",
     "redux-firestore": "^0.9.0",
     "redux-form": "^8.2.6",
+    "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
