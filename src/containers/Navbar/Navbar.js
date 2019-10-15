@@ -5,11 +5,11 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core/styles'
-import { useSelector } from 'react-redux'
 import { isLoaded, isEmpty } from 'react-redux-firebase'
 import { LIST_PATH, LOGIN_PATH } from 'constants/paths'
 import AccountMenu from './AccountMenu'
 import styles from './Navbar.styles'
+import { useSelector } from 'react-redux'
 
 const useStyles = makeStyles(styles)
 
@@ -48,5 +48,6 @@ function Navbar() {
     </AppBar>
   )
 }
+
 
 export default Navbar

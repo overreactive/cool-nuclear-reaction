@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { BrowserRouter as Router } from 'react-router-dom'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 
 import { ReactReduxFirebaseProvider } from 'react-redux-firebase'
 import { createFirestoreInstance } from 'redux-firestore'
+import AppRoutes from 'routes/index'
 
 import { Provider } from 'react-redux'
 import ThemeSettings from 'theme'
@@ -25,7 +25,7 @@ firebase.auth() // <- needed if using auth
 
 const theme = createMuiTheme(ThemeSettings)
 
-function App({ routes, store }) {
+function App({ store }) {
   return (
     <MuiThemeProvider theme={theme}>
       <Provider store={store}>
@@ -34,7 +34,7 @@ function App({ routes, store }) {
           config={rfConfig}
           dispatch={store.dispatch}
           createFirestoreInstance={createFirestoreInstance}>
-          <Router>{routes}</Router>
+          <AppRoutes />
         </ReactReduxFirebaseProvider>
       </Provider>
     </MuiThemeProvider>
@@ -42,7 +42,6 @@ function App({ routes, store }) {
 }
 
 App.propTypes = {
-  routes: PropTypes.object.isRequired,
   store: PropTypes.object.isRequired
 }
 
