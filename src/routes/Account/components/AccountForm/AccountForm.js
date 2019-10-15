@@ -24,12 +24,6 @@ function AccountForm({ account, handleSubmit, submitting, pristine }) {
           label="Display Name"
         />
         <Field name="email" label="Email" component={TextField} fullWidth />
-        <Field
-          name="avatarUrl"
-          label="Avatar Url"
-          component={TextField}
-          fullWidth
-        />
       </div>
       {!!account && !!account.providerData && (
         <div>
