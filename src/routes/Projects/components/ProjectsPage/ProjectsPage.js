@@ -94,8 +94,9 @@ function mapStateToProps(state) {
 
 export default compose(
   connect(mapStateToProps),
-  firestoreConnect([{
-    collection: 'projects'
+  firestoreConnect((props) => [{
+    collection: 'projects',
+    where: [['createdBy', '==', props.auth.uid]]
   }])
 )(ProjectsPage)
 

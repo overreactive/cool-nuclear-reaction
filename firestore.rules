@@ -1,16 +1,21 @@
+rules_version = '2'
 service cloud.firestore {
   match /databases/{database}/documents {
     function isAuthed() {
-      return request.auth.uid != null
+      return request.auth != null
     }
     function isOwner(res) {
-      return res.data.createdBy == request.auth.uid
+      return res.data.createdBy == request.auth.uid;
+    }
+
+    function isUser(userId) {
+      return isAuthed() && request.auth.uid == userId;
     }
 
     // Private user profiles
     match /users/{userId} {
-      allow read: if request.auth.uid == userId;
-      allow write: if request.auth.uid == userId;
+      allow read : if isUser(userId);
+      allow write : if isUser(userId);
     }
 
     // Public user profiles
@@ -22,10 +27,11 @@ service cloud.firestore {
     // Projects
     match /projects/{projectId} {
       // Only projects you own can be viewed
-      allow read, write: if request.auth.uid != null && resource.data.createdBy == request.auth.uid;
+      allow create: if (isAuthed() && isOwner(request.resource));
+      allow update, delete, get, list: if (isAuthed() && isOwner(resource));
       // Rules apply to all child collections
       match /{allChildren=**} {
-        allow read, write: if isOwner(get(/databases/$(database)/documents/projects/$(projectId)));
+        allow list, get, write: if (isAuthed() && isOwner(get(/databases/$(database)/documents/projects/$(projectId))));
       }
     }
   }
