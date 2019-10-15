@@ -15,8 +15,13 @@ function FileUploader({
   uploadedFiles,
   onFinish,
   multiple,
-  uniqueFile
+  uniqueFile,
+  key
 }) {
+  console.log("uploadedFiles", uploadedFiles);
+  console.log("paths[paths.length-1]", paths[paths.length-1]);
+  uploadedFiles = uploadedFiles[paths[paths.length-1]]
+  console.log("uploadedFiles", uploadedFiles);
   const filePath = paths.join('/')
   const { showSuccess, showError } = useNotifications()
 
@@ -38,9 +43,13 @@ function FileUploader({
         }
         if (!multiple) {
           const unique = filesSaved[0]
-          onFinish(unique)
+          if(onFinish) {
+            onFinish(unique)
+          }
         } else {
-          onFinish(filesSaved)
+          if(onFinish) {
+            onFinish(filesSaved)
+          }
         }
       })
       .catch(err => {
@@ -86,8 +95,8 @@ export default compose(
       path: props.paths.join('/')
     }
   ]),
-  connect(({ firebase: { data, auth } }, ownProps) => ({
-    uploadedFiles: get(data[ownProps.paths.slice(0, -1).join('/')], auth.uid)
+  connect(({ firebase: { data } }, ownProps) => ({
+    uploadedFiles: data[ownProps.paths.slice(0, -1).join('/')]
   })),
   spinnerWhileLoading(['uploadedFiles'])
 )(FileUploader)

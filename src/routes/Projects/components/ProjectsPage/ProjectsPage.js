@@ -12,7 +12,12 @@ import NewProjectDialog from '../NewProjectDialog'
 import styles from './ProjectsPage.styles'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { firestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase'
+import {
+  firestoreConnect,
+  firebaseConnect,
+  isLoaded,
+  isEmpty
+} from 'react-redux-firebase'
 
 const useStyles = makeStyles(styles)
 
@@ -92,7 +97,8 @@ function mapStateToProps(state) {
   return {
     projects: state.firestore.ordered.projects,
     auth: state.firebase.auth,
-    profile: state.firebase.profile
+    profile: state.firebase.profile,
+    projectImages: state.firebase.data.projectImages
   }
 }
 
@@ -103,5 +109,6 @@ export default compose(
       collection: 'projects',
       where: [['createdBy', '==', props.auth.uid]]
     }
-  ])
+  ]),
+  firebaseConnect((props) => [{ path: `projectImages` }])
 )(ProjectsPage)

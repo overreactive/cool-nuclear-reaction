@@ -12,17 +12,41 @@ import FileUploader from 'components/FileUploader'
 
 const useStyles = makeStyles(styles)
 
+function ProjectImages({ images, projectId }) {
+  console.log('YES', images, projectId)
+  if (!images || !(projectId in images)) {
+    return null
+  }
+  images = images[projectId]
+  if (!images) {
+    return null
+  }
+  const imageTags = []
+  console.log('images', images)
+
+  for (const [key, value] of Object.entries(images)) {
+    console.log("Putting image with src=", value)
+    imageTags.push(<img alt="project" key={key} src={value.downloadURL}></img>)
+  }
+  return <div>{imageTags}</div>
+}
+
 function ProjectPage() {
   const { projectId } = useParams()
   const classes = useStyles()
 
   // Create listener for projects
   const projects = useSelector(({ firestore: { data } }) => data.projects)
+  const projectImages = useSelector(
+    ({ firebase: { data } }) => data.projectImages
+  )
 
   // Show loading spinner while project is loading
-  if (!isLoaded(projects)) {
+  if (!isLoaded(projects) || !isLoaded(projectImages)) {
     return <LoadingSpinner />
   }
+
+  console.log('projectImages', projectImages)
 
   const project = projects[projectId]
   if (!project) {
@@ -52,7 +76,14 @@ function ProjectPage() {
             </div>
           </CardContent>
         </Card>
-        <FileUploader projectId={projectId} />
+        <FileUploader
+          paths={['projectImages', projectId]}
+          multiple={true}
+          uniqueFile={false}
+        />
+        <ProjectImages
+          images={projectImages}
+          projectId={projectId}></ProjectImages>
       </div>
     )
   }
