@@ -22,21 +22,25 @@ function ProjectsPage({ auth, profile, match, firestore, projects }) {
   const { showSuccess, showError } = useNotifications()
   const toggleDialog = () => changeDialogState(!newDialogOpen)
 
-  const createProject = (project) => {
-    firestore.collection('projects').add({
-      ...project,
-      authorFirstName: profile.firstName || null,
-      authorLastName: profile.lastName || null,
-      createdBy: auth.uid,
-      createdAt: new Date()
-    }).then(() => {
-      toggleDialog()
-      showSuccess("Project added!")
-    }).catch(err => {
-      console.error('Error:', err) // eslint-disable-line no-console
-      showError(err.message || 'Could not add project')
-      return Promise.reject(err)
-    });
+  const createProject = project => {
+    firestore
+      .collection('projects')
+      .add({
+        ...project,
+        authorFirstName: profile.firstName || null,
+        authorLastName: profile.lastName || null,
+        createdBy: auth.uid,
+        createdAt: new Date()
+      })
+      .then(() => {
+        toggleDialog()
+        showSuccess('Project added!')
+      })
+      .catch(err => {
+        console.error('Error:', err) // eslint-disable-line no-console
+        showError(err.message || 'Could not add project')
+        return Promise.reject(err)
+      })
   }
 
   if (!isLoaded(projects)) {
@@ -44,7 +48,7 @@ function ProjectsPage({ auth, profile, match, firestore, projects }) {
   }
 
   return (
-    < Switch >
+    <Switch>
       {/* Child routes */}
       {renderChildren([ProjectRoute], match, { auth: auth })}
       {/* Main Route */}
@@ -74,14 +78,14 @@ function ProjectsPage({ auth, profile, match, firestore, projects }) {
           </div>
         )}
       />
-    </Switch >
+    </Switch>
   )
 }
 
 ProjectsPage.propTypes = {
   match: PropTypes.object.isRequired, // from withRouter (wrapper)
   firestore: PropTypes.object.isRequired, // from firestoreConnect (connect HOC)
-  auth: PropTypes.object.isRequired, // from connect mapStateToProps
+  auth: PropTypes.object.isRequired // from connect mapStateToProps
 }
 
 function mapStateToProps(state) {
@@ -94,9 +98,10 @@ function mapStateToProps(state) {
 
 export default compose(
   connect(mapStateToProps),
-  firestoreConnect((props) => [{
-    collection: 'projects',
-    where: [['createdBy', '==', props.auth.uid]]
-  }])
+  firestoreConnect(props => [
+    {
+      collection: 'projects',
+      where: [['createdBy', '==', props.auth.uid]]
+    }
+  ])
 )(ProjectsPage)
-

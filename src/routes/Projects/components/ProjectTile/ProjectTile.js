@@ -12,7 +12,6 @@ import useNotifications from 'modules/notification/components/useNotifications'
 
 import { firestoreConnect } from 'react-redux-firebase'
 
-
 const useStyles = makeStyles(styles)
 
 function ProjectTile({ name, projectId, showDelete, firestore }) {
@@ -25,7 +24,10 @@ function ProjectTile({ name, projectId, showDelete, firestore }) {
   }
 
   function deleteProject() {
-    return firestore.collection('projects').doc(`${projectId}`).delete()
+    return firestore
+      .collection('projects')
+      .doc(`${projectId}`)
+      .delete()
       .then(() => showSuccess('Project deleted successfully'))
       .catch(err => {
         console.error('Error:', err) // eslint-disable-line no-console

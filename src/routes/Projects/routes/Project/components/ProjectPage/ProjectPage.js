@@ -23,19 +23,19 @@ function ProjectPage() {
     return <LoadingSpinner />
   }
 
-  const project = projects[projectId];
-  if(!project) {
+  const project = projects[projectId]
+  if (!project) {
     return (
       <div className={classes.root}>
-      <Card className={classes.card}>
-        <CardContent>
-          <Typography className={classes.title} component="h2">
-            {`Project seems to be missing!`}
-          </Typography>
-          <Typography className={classes.subtitle}>{projectId}</Typography>
-        </CardContent>
-      </Card>
-    </div>  
+        <Card className={classes.card}>
+          <CardContent>
+            <Typography className={classes.title} component="h2">
+              {`Project seems to be missing!`}
+            </Typography>
+            <Typography className={classes.subtitle}>{projectId}</Typography>
+          </CardContent>
+        </Card>
+      </div>
     )
   } else {
     return (

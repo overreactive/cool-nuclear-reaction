@@ -23,9 +23,7 @@ firebase.firestore() // <- needed if using firestore
 firebase.functions() // <- needed if using httpsCallable
 firebase.auth() // <- needed if using auth
 
-
 const theme = createMuiTheme(ThemeSettings)
-
 
 function App({ routes, store }) {
   return (
