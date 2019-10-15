@@ -22,8 +22,7 @@ function AccountPage({ firebase, profile, auth }) {
       .updateProfile(newAccount)
       .then(() => showSuccess('Profile updated successfully'))
       .catch(error => {
-        console.error('Error updating profile', error.message || error) // eslint-disable-line no-console
-        showError('Error updating profile: ', error.message || error)
+        showError('Error updating profile')
         return Promise.reject(error)
       })
   }
@@ -34,10 +33,10 @@ function AccountPage({ firebase, profile, auth }) {
         avatarUrl: files_metadata.downloadURL
       })
       .then(profile => {
-        console.log('Success updating profile', profile)
+        showSuccess('Updated Profile Avatar')
       })
       .catch(err => {
-        console.log('Error', err)
+        showError('Could Not Update Profile Avatar')
       })
   }
 
