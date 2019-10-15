@@ -25,7 +25,17 @@ export const reduxFirebase = {
   userProfile: 'users',
   enableLogging: false, // enable/disable Firebase Database Logging
   useFirestoreForProfile: true, // Firestore for Profile instead of Realtime DB
-  attachAuthIsReady: true
+  attachAuthIsReady: true,
+  fileMetadataFactory: (uploadRes, firebase, metadata, downloadURL) => {
+    // upload response from Firebase's storage upload
+    const { metadata: { name, fullPath } } = uploadRes
+    // default factory includes name, fullPath, downloadURL
+    return {
+      name,
+      fullPath,
+      downloadURL
+    }
+  }
 };
 
 export default {

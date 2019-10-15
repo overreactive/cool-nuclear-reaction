@@ -1,5 +1,6 @@
 import { applyMiddleware, compose, createStore } from 'redux'
 import thunk from 'redux-thunk'
+import { logger } from 'redux-logger'
 import makeRootReducer from './reducers'
 
 export default (initialState = {}) => {
@@ -22,6 +23,10 @@ export default (initialState = {}) => {
     thunk
     // This is where you add other middleware like redux-observable
   ]
+
+  if (window && window.location && window.location.hostname === 'localhost') {
+    middleware.push(logger)
+  }
 
   // ======================================================
   // Store Instantiation and HMR Setup
