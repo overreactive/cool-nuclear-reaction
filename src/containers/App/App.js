@@ -14,6 +14,7 @@ import 'firebase/auth'
 import 'firebase/database'
 import 'firebase/firestore' // make sure you add this for firestore
 import 'firebase/functions' // <- needed if using httpsCallable
+import 'firebase/storage' // <- needed if using httpsCallable
 
 import { firebase as fbConfig, reduxFirebase as rfConfig } from 'config'
 

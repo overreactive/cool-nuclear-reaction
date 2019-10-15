@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import LoadingSpinner from 'components/LoadingSpinner'
 import styles from './ProjectPage.styles'
+import FileUploader from 'components/FileUploader'
 
 const useStyles = makeStyles(styles)
 
@@ -51,6 +52,7 @@ function ProjectPage() {
             </div>
           </CardContent>
         </Card>
+        <FileUploader projectId={projectId} />
       </div>
     )
   }
