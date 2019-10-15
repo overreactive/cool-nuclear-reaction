@@ -1,27 +1,20 @@
 import React from 'react'
 import Paper from '@material-ui/core/Paper'
 import { makeStyles } from '@material-ui/core/styles'
-import { useSelector } from 'react-redux'
-import { isLoaded, useFirebase } from 'react-redux-firebase'
-import LoadingSpinner from 'components/LoadingSpinner'
 import { useNotifications } from 'modules/notification'
 import defaultUserImageUrl from 'static/User.png'
 import AccountForm from '../AccountForm'
 import styles from './AccountPage.styles'
-
+import { spinnerWhileLoading } from 'utils/components'
+import { compose } from 'redux'
+import { connect } from 'react-redux'
+import { firebaseConnect } from 'react-redux-firebase'
 const useStyles = makeStyles(styles)
 
-function AccountPage() {
+function AccountPage({ firebase, profile }) {
   const classes = useStyles()
-  const firebase = useFirebase()
+
   const { showSuccess, showError } = useNotifications()
-
-  // Get profile from redux state
-  const profile = useSelector(state => state.firebase.profile)
-
-  if (!isLoaded(profile)) {
-    return <LoadingSpinner />
-  }
 
   function updateAccount(newAccount) {
     return firebase
@@ -58,4 +51,10 @@ function AccountPage() {
   )
 }
 
-export default AccountPage
+const enhance = compose(
+  firebaseConnect(() => ['profile']),
+  connect(({ firebase: { profile } }) => ({ profile })),
+  spinnerWhileLoading(['profile'])
+)
+
+export default enhance(AccountPage)
