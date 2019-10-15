@@ -12,3 +12,6 @@ build
 #src/config.js
 .env
 .firebase/
+
+.code
+.vscode
