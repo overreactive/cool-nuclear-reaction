@@ -15,6 +15,7 @@ import 'firebase/database'
 import 'firebase/firestore' // make sure you add this for firestore
 import 'firebase/functions' // <- needed if using httpsCallable
 import 'firebase/storage' // <- needed if using httpsCallable
+import 'firebase/analytics' // <- needed if using analytics
 
 import { firebase as fbConfig, reduxFirebase as rfConfig } from 'config'
 
@@ -23,6 +24,7 @@ firebase.initializeApp(fbConfig)
 firebase.firestore() // <- needed if using firestore
 firebase.functions() // <- needed if using httpsCallable
 firebase.auth() // <- needed if using auth
+firebase.analytics() // <- needed if using analytics
 
 const theme = createMuiTheme(ThemeSettings)
 
