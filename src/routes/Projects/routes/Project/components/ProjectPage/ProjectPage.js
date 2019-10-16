@@ -9,26 +9,28 @@ import { useSelector } from 'react-redux'
 import LoadingSpinner from 'components/LoadingSpinner'
 import styles from './ProjectPage.styles'
 import FileUploader from 'components/FileUploader'
+import ImageGallery from 'react-image-gallery'
+import 'react-image-gallery/styles/scss/image-gallery.scss'
+import 'react-image-gallery/styles/css/image-gallery.css'
 
 const useStyles = makeStyles(styles)
 
 function ProjectImages({ images, projectId }) {
   console.log('YES', images, projectId)
-  if (!images || !(projectId in images)) {
+  if (!images || !(projectId in images) || !images[projectId]) {
     return null
   }
   images = images[projectId]
-  if (!images) {
-    return null
-  }
-  const imageTags = []
-  console.log('images', images)
+  const imagesForGallery = []
 
   for (const [key, value] of Object.entries(images)) {
-    console.log("Putting image with src=", value)
-    imageTags.push(<img alt="project" key={key} src={value.downloadURL}></img>)
+    imagesForGallery.push({
+      original: value.downloadURL
+    })
+    // console.log("Putting image with src=", value)
+    // imageTags.push(<img alt="project" key={key} src={value.downloadURL}></img>)
   }
-  return <div>{imageTags}</div>
+  return <ImageGallery items={imagesForGallery} />
 }
 
 function ProjectPage() {
