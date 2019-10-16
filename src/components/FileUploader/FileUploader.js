@@ -26,7 +26,7 @@ function FileUploader({
       return
     }
     return firebase
-      .uploadFiles(filePath, files, filePath, { name: cuid() })
+      .uploadFiles(filePath, files, filePath, { name: cuid })
       .then(filesSaved => {
         showSuccess('File Uploaded sucessfully')
         if (uniqueFile) {
