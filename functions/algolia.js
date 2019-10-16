@@ -2,9 +2,11 @@
 // https://www.algolia.com/doc/api-client/javascript/getting-started/#install
 //
 // App ID and API Key are stored in functions config variables
+const functions = require('firebase-functions')
 const ALGOLIA_ID = functions.config().algolia.app_id
 const ALGOLIA_ADMIN_KEY = functions.config().algolia.api_key
 const ALGOLIA_SEARCH_KEY = functions.config().algolia.search_key
+const algoliasearch = require('algoliasearch')
 
 const ALGOLIA_INDEX_NAME = 'projects'
 const client = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY)
