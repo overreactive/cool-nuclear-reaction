@@ -6,7 +6,6 @@ import { firebaseConnect } from 'react-redux-firebase'
 import Dropzone from 'react-dropzone'
 import { useNotifications } from 'modules/notification'
 import { spinnerWhileLoading } from 'utils/components'
-import { get } from 'lodash'
 import cuid from 'cuid'
 
 function FileUploader({
@@ -15,13 +14,9 @@ function FileUploader({
   uploadedFiles,
   onFinish,
   multiple,
-  uniqueFile,
-  key
+  uniqueFile
 }) {
-  console.log("uploadedFiles", uploadedFiles);
-  console.log("paths[paths.length-1]", paths[paths.length-1]);
-  uploadedFiles = uploadedFiles[paths[paths.length-1]]
-  console.log("uploadedFiles", uploadedFiles);
+  uploadedFiles = uploadedFiles[paths[paths.length - 1]]
   const filePath = paths.join('/')
   const { showSuccess, showError } = useNotifications()
 
@@ -43,11 +38,11 @@ function FileUploader({
         }
         if (!multiple) {
           const unique = filesSaved[0]
-          if(onFinish) {
+          if (onFinish) {
             onFinish(unique)
           }
         } else {
-          if(onFinish) {
+          if (onFinish) {
             onFinish(filesSaved)
           }
         }
