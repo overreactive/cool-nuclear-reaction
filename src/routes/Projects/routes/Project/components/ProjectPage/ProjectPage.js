@@ -70,6 +70,9 @@ function ProjectPage() {
             <Typography className={classes.title} component="h2">
               {project.name || 'Project'}
             </Typography>
+            <Typography className={classes.text} component="p">
+              {project.description || 'Project'}
+            </Typography>
             <Typography className={classes.subtitle}>{projectId}</Typography>
             <div style={{ marginTop: '10rem' }}>
               <pre>{JSON.stringify(project, null, 2)}</pre>

@@ -27,6 +27,12 @@ function NewProjectDialog({ handleSubmit, open, onRequestClose }) {
             label="Project Name"
             validate={[required]}
           />
+          <Field
+            name="description"
+            component={TextField}
+            label="Project Descrition"
+            validate={[required]}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={onRequestClose} color="secondary">
