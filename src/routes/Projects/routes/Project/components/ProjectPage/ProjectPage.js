@@ -27,8 +27,6 @@ function ProjectImages({ images, projectId }) {
     imagesForGallery.push({
       original: value.downloadURL
     })
-    // console.log("Putting image with src=", value)
-    // imageTags.push(<img alt="project" key={key} src={value.downloadURL}></img>)
   }
   return <ImageGallery items={imagesForGallery} />
 }

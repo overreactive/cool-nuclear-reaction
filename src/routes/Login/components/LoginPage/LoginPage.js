@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import GoogleButton from 'react-google-button'
+import FacebookLogin from 'react-facebook-login'
 import { useFirebase } from 'react-redux-firebase'
 import Paper from '@material-ui/core/Paper'
 import { makeStyles } from '@material-ui/core/styles'
@@ -22,6 +23,10 @@ function LoginPage() {
     firebase
       .login({ provider: 'google', type: 'popup' })
       .catch(err => showError(err.message))
+  const facebookLogin = () =>
+    firebase
+      .login({ provider: 'facebook', type: 'popup', scopes: [] })
+      .catch(err => showError(err.message))
   const emailLogin = creds =>
     firebase.login(creds).catch(err => showError(err.message))
 
@@ -33,6 +38,12 @@ function LoginPage() {
       <div className={classes.orLabel}>or</div>
       <div className={classes.providers}>
         <GoogleButton onClick={googleLogin} data-test="google-auth-button" />
+      </div>
+      <div className={classes.providers}>
+        <FacebookLogin
+          onClick={facebookLogin}
+          data-test="facebook-auth-button"
+        />
       </div>
       <div className={classes.signup}>
         <span className={classes.signupLabel}>Need an account?</span>
