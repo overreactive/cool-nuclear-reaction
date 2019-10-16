@@ -18,7 +18,7 @@ function indexProject(snap, context) {
 
   // Write to the algolia index
   const index = client.initIndex(ALGOLIA_INDEX_NAME)
-  console.log("index: ", index);
+  console.log('index: ', index)
   return index.saveObject(project)
 }
 

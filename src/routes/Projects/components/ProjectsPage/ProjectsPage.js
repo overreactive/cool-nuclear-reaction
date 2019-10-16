@@ -110,5 +110,5 @@ export default compose(
       where: [['createdBy', '==', props.auth.uid]]
     }
   ]),
-  firebaseConnect((props) => [{ path: `projectImages` }])
+  firebaseConnect(props => [{ path: `projectImages` }])
 )(ProjectsPage)

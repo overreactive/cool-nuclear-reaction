@@ -23,7 +23,7 @@ function ProjectImages({ images, projectId }) {
   images = images[projectId]
   const imagesForGallery = []
 
-  for (const [key, value] of Object.entries(images)) {
+  for (const value of Object.values(images)) {
     imagesForGallery.push({
       original: value.downloadURL
     })
